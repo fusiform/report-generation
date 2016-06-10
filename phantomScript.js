@@ -14,7 +14,7 @@ function onPageReady() {
       }
     };
 
-    page.render('test.pdf');
+    page.render('report.pdf');
     phantom.exit();
 }
 
