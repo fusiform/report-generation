@@ -1,0 +1,16 @@
+<html>
+<body>
+  <form action="javascript:submit()">
+    <p><input type="submit" value="generate pdf"></p>
+  </form>
+  <script src="fields.js"></script>
+  <script>
+    function submit() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", 'http://localhost:3000', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(fields));
+    }
+  </script>
+</body>
+</html>
