@@ -534,6 +534,7 @@ var fields = {
 var model = {
   'Text_Name': 'xxxxx',
   'Text_DX': 'yyyyyy',
+  'Text_Special_Instructions': 'zzzzzzzzzzzzzzzzzzzzz',
   'Select_Pathology': ['Symmetrical', 'Asymmetrical']
 }
 
@@ -545,7 +546,7 @@ class FilledOrderForm {
   }
   addSelection(name, value) {
     console.log('adding:' + name+', '+value);
-    var optionName = name + '_' + String(value).replace(' ','_');
+    var optionName = name + '_' + String(value).replace(' ','_').replace('-','_').replace(/\//g,'_');
     if(this.fields.hasOwnProperty(optionName) && this.fields[optionName].type === 'checkbox') {
       this.fields[optionName].val = true;
     }
