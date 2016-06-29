@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FusiformCAST</title>
+    <script src="js/jquery-2.2.2.js"></script>
+    <script src="js/angular.1.3.12.js"></script>
+    <script src="js/bootstrap.3.1.1.js"></script>
+    <script src="js/objectpath.js"></script>
+    <script src="js/schema-form.js"></script>
+    <script src="js/bootstrap-decorator.js"></script>
+    <script src="schema_application.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
+    <link href="css/bootstrap.3.1.1.css" rel="stylesheet" type="text/css">
+    <link href="css/application.css" rel="stylesheet" type="text/css">
+</head>
+<body ng-app="app">
+<div id="app-container" class="container-fluid" ng-controller="SchemaPreviewController">
+
+    <uib-accordion>
+    	<uib-accordion-group class="form-panel panel" ng-repeat="stage in schema">
+        <uib-accordion-heading>
+          {{stage.header}}
+        </uib-accordion-heading>
+        <h5>{{stage.body}}</h5>
+    	   <div class="">
+          <form sf-schema="stage.fields" sf-form="stage.form" sf-model="stage.model"></form>
+        </div>
+    	</uib-accordion-group>
+    </uib-accordion>
+  </div>
+
+</div>
+</body>
+</html>

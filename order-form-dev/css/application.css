@@ -1,0 +1,78 @@
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-top: 0;
+}
+hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+body, html {
+  margin: 0;
+}
+
+#app-container {
+  min-height: 100vh;
+  height: 100%;
+  padding: 0;
+}
+
+#pdf-col {
+  background: #DDD;
+  height: 100%;
+  padding: 30px;
+}
+
+#pdf-canvas {
+  z-index: 1;
+  border: 1px solid #BBB;
+}
+
+#overlay-canvas {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 2;
+  cursor: crosshair;
+}
+
+#control-col {
+  padding: 30px;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+#control-panel-view {
+  margin-top: 30px;
+}
+
+.modal-backdrop {
+  background: black;
+  opacity: 0.8 !important;
+}
+
+#add-controls-panel > .tab-content {
+  height: 330px;
+  margin-bottom: 30px;
+  overflow-x: visible;
+  overflow-y: scroll;
+}
+
+.well {
+  background: white;
+}
+
+#schema-textbox {
+  font-family: 'Monaco', monospace;
+  font-size: 12px;
+}
+
+.full-height {
+  padding-top: 15px;
+  height: 100vh;
+}
+
+.full-height > textarea {
+  height: 95%;
+}
