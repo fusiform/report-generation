@@ -64,8 +64,13 @@ application.controller('PanelController', function($scope, $rootScope, $window, 
       $rootScope.rectDrawingAllowed = false;
       break;
       case 2:
-      $rootScope.outlineDrawingAllowed = false;
-      $rootScope.rectDrawingAllowed = true;
+      if($scope.pendingCheckbox.drawingType == 'outline') {
+        $rootScope.outlineDrawingAllowed = true;
+        $rootScope.rectDrawingAllowed = false;
+      } else {
+        $rootScope.outlineDrawingAllowed = false;
+        $rootScope.rectDrawingAllowed = true;
+      }
     }
   };
 
@@ -113,25 +118,28 @@ application.controller('PanelController', function($scope, $rootScope, $window, 
     $scope.pendingTextField.label = '';
     $scope.pendingTextFieldPosition = '';
   };
-  $rootScope.$on('lineEndEvent', function() {
-    $scope.pendingTextFieldPosition =
-      'x: '+$rootScope.pendingOutline[0]+
-      ', y: '+$rootScope.pendingOutline[1]+
-      ', w: '+$rootScope.pendingOutline[2]+
-      ', h: '+$rootScope.pendingOutline[3];
-  });
 
   //checkbox group tab
-  $scope.pendingCheckbox = {};
+  $scope.pendingCheckbox = {
+    drawingType: 'box'
+  };
   $scope.pendingCheckboxPosition = '';
   $scope.selectCheckboxStage = function(clicked) {
     $scope.pendingCheckbox.stage = clicked;
   };
 
   $scope.addCheckbox = function() {
-    $rootScope.saveRect();
-    $scope.pendingCheckbox.x = $rootScope.pendingRect[0];
-    $scope.pendingCheckbox.y = $rootScope.pendingRect[1];
+    if($scope.pendingCheckbox.drawingType == 'box') {
+      $scope.pendingCheckbox.x = $rootScope.pendingRect[0];
+      $scope.pendingCheckbox.y = $rootScope.pendingRect[1];
+      $rootScope.saveRect();
+    } else {
+      $scope.pendingCheckbox.x = $rootScope.pendingOutline[0];
+      $scope.pendingCheckbox.y = $rootScope.pendingOutline[1];
+      $scope.pendingCheckbox.w = $rootScope.pendingOutline[2];
+      $scope.pendingCheckbox.h = $rootScope.pendingOutline[3];
+      $rootScope.saveOutline();
+    }
     $scope.model.push(JSON.parse(JSON.stringify($scope.pendingCheckbox)));
     $scope.updateModel();
     $scope.clearCheckboxForm();
@@ -140,6 +148,19 @@ application.controller('PanelController', function($scope, $rootScope, $window, 
     $scope.pendingCheckbox.optionLabel = '';
     $scope.pendingCheckboxPosition = '';
   };
+
+  $rootScope.$on('lineEndEvent', function() {
+    $scope.pendingTextFieldPosition =
+      'x: '+$rootScope.pendingOutline[0]+
+      ', y: '+$rootScope.pendingOutline[1]+
+      ', w: '+$rootScope.pendingOutline[2]+
+      ', h: '+$rootScope.pendingOutline[3];
+    $scope.pendingCheckboxPosition =
+      'x: '+$rootScope.pendingOutline[0]+
+      ', y: '+$rootScope.pendingOutline[1]+
+      ', w: '+$rootScope.pendingOutline[2]+
+      ', h: '+$rootScope.pendingOutline[3];
+  });
   $rootScope.$on('rectEndEvent', function() {
     $scope.pendingCheckboxPosition =
       'x: '+$rootScope.pendingRect[0]+

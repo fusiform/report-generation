@@ -83,7 +83,7 @@ app.get('/', function(req, res) {
     var hummus = require('hummus');
     var pdfWriter = hummus.createWriterToModify(
         new hummus.PDFRStreamForFile(
-             './Surestep_HEKO.pdf'),
+             './Surestep_TLSO.pdf'),
         new hummus.PDFStreamForResponse(res)
     );
 

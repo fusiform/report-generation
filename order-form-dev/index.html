@@ -122,8 +122,12 @@
                 Required: <ng-show ng-show="pendingCheckbox.required == true">Yes</ng-show><ng-show ng-show="pendingCheckbox.required != true">No</ng-show>
               </button>
               <div class="btn-group">
-                <label class="btn btn-info" ng-model="pendingCheckbox.checkboxType" uib-btn-radio="'Single'" uncheckable>Single-select</label>
-                <label class="btn btn-info" ng-model="pendingCheckbox.checkboxType" uib-btn-radio="'Multi'" uncheckable>Multi-select</label>
+                <label class="btn btn-info" ng-model="pendingCheckbox.checkboxType" uib-btn-radio="'Single'" uncheckable>Single</label>
+                <label class="btn btn-info" ng-model="pendingCheckbox.checkboxType" uib-btn-radio="'Multi'" uncheckable>Multi</label>
+              </div>
+              <div class="btn-group">
+                <label class="btn btn-info" ng-model="pendingCheckbox.drawingType" uib-btn-radio="'box'" uncheckable ng-click="drawingSelect(2)">Box</label>
+                <label class="btn btn-info" ng-model="pendingCheckbox.drawingType" uib-btn-radio="'outline'" uncheckable ng-click="drawingSelect(2)">Outline</label>
               </div>
             </div>
             <div class="form-group">
