@@ -148,6 +148,84 @@ application.controller('PanelController', function($scope, $rootScope, $window, 
 
 });
 
+application.controller('TestPanelController', function($scope, $rootScope, $window, $uibModal) {
+  $scope.window = $window;
+
+  $scope.model = [];
+  $scope.json = '';
+
+  $scope.loadPDF = function(filename) {
+    PDFJS.getDocument(filename).then(function(pdf) {
+      pdf.getPage(1).then(function(page) {
+        var pixelWidth = document.getElementById('pdf-container').clientWidth;
+        var viewport = page.getViewport(1);
+        var scale = pixelWidth / viewport.width;
+        var viewport = page.getViewport(scale);
+
+        var pdfCanvas = document.getElementById('pdf-canvas');
+        var pdfContext = pdfCanvas.getContext('2d');
+        pdfCanvas.height = viewport.height;
+        pdfCanvas.width = viewport.width;
+
+        var overlayCanvas = document.getElementById('overlay-canvas');
+        var overlayContext = overlayCanvas.getContext('2d');
+        overlayCanvas.height = viewport.height;
+        overlayCanvas.width = viewport.width;
+
+        var renderContext = {
+          canvasContext: pdfContext,
+          viewport: viewport
+        };
+        page.render(renderContext);
+        $scope.model.push({
+          viewportWidthPX: viewport.width,
+          viewportHeightPX: viewport.height
+        });
+        $scope.updateModel();
+      });
+    });
+  };
+
+  var modalInstance = $uibModal.open({
+    animation: $scope.animationsEnabled,
+    templateUrl: 'fileSelectModal.html',
+    controller: 'FileSelectModalController'
+  });
+
+  modalInstance.result.then(function (filenameInput) {
+    $scope.loadPDF(filenameInput.valueOf());
+    $scope.filename = '...'+filenameInput.substring(filenameInput.lastIndexOf('/'));
+  });
+
+  $scope.updateModel = function() {
+    $scope.json = JSON.stringify($scope.model)
+      .replace('},\s{','},\n\n{')
+      .replace('[{','[\n{')
+      .replace('}]','}\n]');
+  };
+  $scope.updateFromJSON = function() {
+    $rootScope.completedOutlines = [];
+    $rootScope.completedRects = [];
+    $scope.model = JSON.parse($scope.json);
+    for(var field in $scope.model) {
+      console.log(field)
+        if($scope.model[field].hasOwnProperty('label')) {
+          $rootScope.completedOutlines.push({
+            origin: [$scope.model[field].x, $scope.model[field].y],
+            dim:  [$scope.model[field].w, $scope.model[field].h]
+          });
+        } else if($scope.model[field].hasOwnProperty('optionLabel')) {
+          $rootScope.completedRects.push({
+            origin: [$scope.model[field].x, $scope.model[field].y],
+            dim:  [6,6]
+          });
+        }
+    }
+    console.log($rootScope.completedRects);
+    $rootScope.render();
+  }
+});
+
 application.controller('FileSelectModalController', function ($scope, $uibModalInstance) {
   //$scope.filenameInput = 'templates/form.pdf'
   $scope.loadFile = function () {
@@ -277,6 +355,9 @@ application.controller('CanvasController', function($scope, $rootScope) {
       dim:  [activeRect.dim[0], activeRect.dim[1]]
     });
     console.log($rootScope.completedRects);
+    render();
+  };
+  $rootScope.render = function() {
     render();
   };
 });

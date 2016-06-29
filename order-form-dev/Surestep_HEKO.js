@@ -662,8 +662,8 @@
     "required": false,
     "x": 504,
     "y": 1109,
-    "w": 531,
-    "h": -538
+    "w": 48,
+    "h": 38
 }, {
     "stage": {
         "name": "Custom Measurements",

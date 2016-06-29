@@ -47,20 +47,12 @@ application.controller('SchemaConversionController', function($scope, $rootScope
     function getOrigin(input, pageSizePX, pageSizePT, fieldType) {
         var xPT, yPT;
         if (fieldType == 'text') {
-            if (input.w > 0) {
-                xPT = input.x * pageSizePT[0] / pageSizePX[0];
-            } else {
-                xPT = input.x + input.w * pageSizePT[0] / pageSizePX[0];
-            }
-            if (input.h < 0) {
-                yPT = (pageSizePX[1] - input.y) * pageSizePT[1] / pageSizePT[1];
-            } else {
-                yPT = (pageSizePX[1] - (input.y + input.h)) * pageSizePT[1] / pageSizePT[1];
-            }
+            xPT = input.x * pageSizePT[0] / pageSizePX[0];
+            yPT = (input.y * pageSizePT[1] / pageSizePX[1]);
             return [xPT, yPT];
         } else {
             xPT = input.x * pageSizePT[0] / pageSizePX[0];
-            yPT = (pageSizePX[1] - input.y) * pageSizePT[1] / pageSizePT[1];
+            yPT = (input.y * pageSizePT[1] / pageSizePX[1]);
             return [xPT, yPT];
         }
 
@@ -68,11 +60,11 @@ application.controller('SchemaConversionController', function($scope, $rootScope
 
     function getDimensions(input, pageSizePX, pageSizePT, fieldType) {
         if (fieldType == 'text') {
-            var wPT = Math.abs(input.w) * pageSizePT[0] / pageSizePX[0];
-            var hPT = Math.abs(input.h) * pageSizePT[1] / pageSizePX[1];
+            var wPT = input.w * pageSizePT[0] / pageSizePX[0];
+            var hPT = input.h * -1 * pageSizePT[1] / pageSizePX[1];
             return [wPT, hPT];
         } else {
-            return [6, 6];
+            return [6, -6];
         }
     }
 
@@ -85,6 +77,15 @@ application.controller('SchemaConversionController', function($scope, $rootScope
             console.log(i, input[i]);
             var fieldType = getFieldType(input[i]);
             var fieldName = getFieldName(input[i], fieldType);
+            if(input[i].w < 0) {
+              input[i].x += input[i].w;
+              input[i].w *= -1;
+            }
+            if(input[i].h < 0) {
+              input[i].y += input[i].h;
+              input[i].h *= -1;
+            }
+            input[i].y = pageSizePX[1] - input[i].y;
             var origin = getOrigin(input[i], pageSizePX, pageSizePT, fieldType);
             var dim = getDimensions(input[i], pageSizePX, pageSizePT, fieldType);
             template[fieldName] = {
