@@ -7,6 +7,7 @@
     <script src="js/bootstrap.3.1.1.js"></script>
     <script src="js/objectpath.js"></script>
     <script src="js/schema-form.js"></script>
+    <script src="js/angular-sanitize.js"></script>
     <script src="js/bootstrap-decorator.js"></script>
     <script src="schema_application.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
@@ -15,6 +16,11 @@
     <link href="css/application.css" rel="stylesheet" type="text/css">
 </head>
 <body ng-app="app">
+  <style>
+  .third-column {
+    background: red !important;
+  }
+  </style>
 <div id="app-container" class="container-fluid" ng-controller="SchemaConversionController">
   <div class="full-height col-xs-4">
     <label>Input</label>
