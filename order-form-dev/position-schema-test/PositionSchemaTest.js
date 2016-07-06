@@ -83,7 +83,7 @@ app.get('/', function(req, res) {
     var hummus = require('hummus');
     var pdfWriter = hummus.createWriterToModify(
         new hummus.PDFRStreamForFile(
-             './Surestep_TLSO.pdf'),
+             './form.pdf'),
         new hummus.PDFStreamForResponse(res)
     );
 
@@ -100,10 +100,13 @@ app.get('/', function(req, res) {
         color: 0x29A4BE
     };
     var checkboxFormat = {
-        w: 6,
-        h: 6,
         color: 0x29A4BE,
         type: 'fill'
+    };
+    var checkboxOutlineFormat = {
+        color: 0x29A4BE,
+        type: 'stroke',
+        width: 1.5
     };
     var textboxFormat = {
         color: 0xFFFFFF,
@@ -122,11 +125,10 @@ app.get('/', function(req, res) {
             //writeFormText(context, field.x, field.y, field.val, titleTextFormat);
             //ctx.drawRectangle(field.x, field.y, field.w, field.h, checkboxFormat);
         } else if (field.type == "text" && field.val != undefined) {
-          //context.drawRectangle(field.x, field.y, field.w, field.h, textboxFormat);
-          writeFormText(context, field.x+bodyTextFormat.size*0.5, field.y-bodyTextFormat.size, field.val, bodyTextFormat);
+            writeFormText(context, field.x+bodyTextFormat.size*0.5, field.y-bodyTextFormat.size, field.val, bodyTextFormat);
         } else if (field.type == "checkbox" && field.val) {
-          context.drawRectangle(field.x, field.y, field.w, field.h, checkboxFormat);
-          drawCheckbox(context, field.x, field.y, field.w, field.h, checkboxFormat);
+            if (field.w <= 6 && field.h >= -6) drawCheckbox(context, field.x, field.y, field.w, field.h, checkboxFormat);
+            else drawCheckbox(context, field.x, field.y, field.w, field.h, checkboxOutlineFormat);
         }
     }
 

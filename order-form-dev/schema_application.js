@@ -59,7 +59,7 @@ application.controller('SchemaConversionController', function($scope, $rootScope
     }
 
     function getDimensions(input, pageSizePX, pageSizePT, fieldType) {
-        if (fieldType == 'text') {
+        if (fieldType == 'text' || (fieldType == 'checkbox' && input.drawingType == 'outline')) {
             var wPT = input.w * pageSizePT[0] / pageSizePX[0];
             var hPT = input.h * -1 * pageSizePT[1] / pageSizePX[1];
             return [wPT, hPT];
@@ -199,7 +199,7 @@ application.controller('SchemaConversionController', function($scope, $rootScope
         element.form.push({
             type: 'submit',
             title: 'Save & Continue',
-            style: 'btn-succcess'
+            style: 'btn-success'
         });
         return element;
     }
